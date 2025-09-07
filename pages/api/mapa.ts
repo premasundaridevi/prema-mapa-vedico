@@ -14,9 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // 🔹 Resposta simulada por enquanto
     const resultado = {
-      ascendente: "Leão",
-      sol: "Escorpião",
-      lua: "Touro",
+      ascendente: 
+      sol: 
+      lua: 
       pdfUrl: "/exemplo-mapa.pdf",
     };
 
