@@ -12,7 +12,8 @@ export default function Page() {
     setErr(null);
     setResp(null);
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
     try {
@@ -35,14 +36,13 @@ export default function Page() {
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-12">
       {/* Título */}
       <h1 className="text-3xl md:text-4xl font-serif font-bold text-center text-[#0F4C5C] mb-2">
-        Análise Védica por{" "}
-        <span className="text-[#c9a227]">Prema Sundari ☾</span>
+        Análise Védica por <span className="text-[#c9a227]">Prema Sundari ☾</span>
       </h1>
       <p className="text-center text-[#2f6f5e] mb-8">
         Alinhe sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
       </p>
 
-      {/* Formulário */}
+      {/* Formulário (layout da sua captura) */}
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md space-y-4"
@@ -85,6 +85,24 @@ export default function Page() {
           className="w-full p-3 border rounded-md"
         />
 
+        {/* Campos de lead */}
+        <input
+          type="email"
+          name="email"
+          placeholder="E-mail"
+          required
+          className="w-full p-3 border rounded-md"
+        />
+        <input
+          type="tel"
+          name="telefone"
+          placeholder="Telefone (com DDD)"
+          required
+          pattern="[\d\s()+-]{9,}" // aceita números e símbolos comuns
+          title="Digite um telefone válido (ex.: 11 91234-5678)"
+          className="w-full p-3 border rounded-md"
+        />
+
         <label className="flex items-center text-xs text-gray-600">
           <input type="checkbox" name="consent" required className="mr-2" />
           Concordo em receber meu mapa e comunicações (LGPD).
@@ -101,14 +119,14 @@ export default function Page() {
         <p className="text-xs text-center text-gray-500 mt-2">
           Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
         </p>
+
+        {err && <p className="text-sm text-red-600 text-center mt-2">{err}</p>}
       </form>
 
       {/* Resultado */}
       {resp && (
         <div className="mt-8 bg-white p-6 rounded-lg shadow-md max-w-md w-full text-center">
-          <h2 className="text-xl font-serif mb-2 text-[#0F4C5C]">
-            Seu Resultado
-          </h2>
+          <h2 className="text-xl font-serif mb-2 text-[#0F4C5C]">Seu Resultado</h2>
           <p>
             <b>Ascendente:</b> {resp.ascendente ?? "--"}
           </p>
@@ -129,13 +147,10 @@ export default function Page() {
 
           <div className="mt-4 text-sm text-[#2f6f5e]">
             <p>
-              Na leitura completa, conecto <b>Casa 10</b> (carreira),{" "}
-              <b>Sol</b> (liderança) e <b>Saturno</b> (método)
+              Na leitura completa, conecto <b>Casa 10</b> (carreira), <b>Sol</b> (liderança) e{" "}
+              <b>Saturno</b> (método)
             </p>
-            <p>
-              para definir critérios práticos de decisão e próximos passos
-              alinhados ao seu Dharma.
-            </p>
+            <p>para definir critérios práticos e próximos passos alinhados ao seu Dharma.</p>
           </div>
         </div>
       )}
