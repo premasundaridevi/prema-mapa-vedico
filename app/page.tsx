@@ -1,71 +1,110 @@
 "use client";
 import { useState } from "react";
 
-export default function Home(){
-  const [loading,setLoading]=useState(false)
-  const [resp,setResp]=useState<any>(null)
-  const [err,setErr]=useState<string>()
+export default function Home() {
+  const [loading, setLoading] = useState(false);
+  const [resp, setResp] = useState<any>(null);
+  const [err, setErr] = useState<string>();
 
-  async function onSubmit(e:any){
-    e.preventDefault(); setLoading(true); setErr(undefined)
-    const body = Object.fromEntries(new FormData(e.target).entries())
-    const r = await fetch("/api/mapa",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
-    const j = await r.json(); if(!r.ok){ setErr(j.error||"Erro"); setLoading(false); return }
-    setResp(j); setLoading(false)
+  async function onSubmit(e: any) {
+    e.preventDefault();
+    setLoading(true);
+    setErr(undefined);
+    const body = Object.fromEntries(new FormData(e.target).entries());
+
+    const r = await fetch("/api/mapa", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const j = await r.json();
+    if (!r.ok) {
+      setErr(j.error || "Erro ao gerar mapa");
+      setLoading(false);
+      return;
+    }
+    setResp(j);
+    setLoading(false);
   }
 
   return (
-    <main style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'40px 16px'}}>
-      <div style={{width:'100%', maxWidth:720, textAlign:'center'}}>
-        <h1 style={{fontSize:32, marginBottom:16}}>
-          Mapa Védico da Prema Sundari <span style={{color:'#C9A227'}}>☾</span>
+    <main
+      className="min-h-screen flex items-center justify-center px-4 py-12"
+      style={{
+        background:
+          "linear-gradient(to bottom, #0F4C5C, #0B2730 60%, #0F4C5C)",
+      }}
+    >
+      <div className="w-full max-w-2xl text-center">
+        <h1 className="text-3xl md:text-4xl font-serif text-white mb-6">
+          Mapa Védico da Prema Sundari{" "}
+          <span style={{ color: "#D4AF37" }}>☾</span>
         </h1>
 
         {/* CARTÃO DO FORMULÁRIO */}
-        <form onSubmit={onSubmit} className="card" id="form" style={{margin:'0 auto', maxWidth:520, textAlign:'left'}}>
-          <label>Seu nome</label>
-          <input className="input" name="nome" required style={{marginTop:6, marginBottom:12}}/>
+        <form
+          onSubmit={onSubmit}
+          id="form"
+          className="bg-white rounded-xl shadow-lg p-6 text-left"
+        >
+          <label className="block mb-2 text-sm font-medium text-prema-azul">
+            Nome
+          </label>
+          <input
+            className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
+            name="nome"
+            required
+          />
 
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12}}>
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label>Data de nascimento</label>
-              <input className="input" type="date" name="data" required style={{marginTop:6}}/>
+              <label className="block mb-2 text-sm font-medium text-prema-azul">
+                Data de nascimento
+              </label>
+              <input
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                type="date"
+                name="data"
+                required
+              />
             </div>
             <div>
-              <label>Hora (opcional)</label>
-              <input className="input" type="time" name="hora" style={{marginTop:6}}/>
+              <label className="block mb-2 text-sm font-medium text-prema-azul">
+                Hora (opcional)
+              </label>
+              <input
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                type="time"
+                name="hora"
+              />
             </div>
           </div>
 
-          <label style={{marginTop:12, display:'block'}}>Cidade de nascimento</label>
-          <input className="input" name="cidade" required style={{marginTop:6}}/>
+          <label className="block mt-4 mb-2 text-sm font-medium text-prema-azul">
+            Cidade
+          </label>
+          <input
+            className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
+            name="cidade"
+            required
+          />
 
-          <label style={{marginTop:12, display:'block'}}>País</label>
-          <input className="input" name="pais" required style={{marginTop:6}}/>
+          <label className="block mb-2 text-sm font-medium text-prema-azul">
+            País
+          </label>
+          <input
+            className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
+            name="pais"
+            required
+          />
 
-          <label style={{fontSize:12, display:'flex', alignItems:'center', gap:8, marginTop:12}}>
-            <input type="checkbox" name="consent" value="true" required/> Concordo em receber meu mapa e comunicações (LGPD).
+          <label className="flex items-center gap-2 text-xs text-gray-600 mt-2">
+            <input type="checkbox" name="consent" value="true" required />{" "}
+            Concordo em receber meu mapa e comunicações (LGPD).
           </label>
 
-          <button className="btn" disabled={loading} style={{marginTop:16, width:'100%'}}>
-            {loading? "Gerando…" : "Gerar Mapa"}
-          </button>
-          {err && <div style={{color:'#b00020', fontSize:12, marginTop:8}}>{err}</div>}
-        </form>
-
-        {/* CARTÃO DO RESULTADO */}
-        <div style={{marginTop:20}}>
-          {resp ? (
-            <div className="card" style={{margin:'0 auto', maxWidth:520, textAlign:'left'}}>
-              <h2 style={{fontSize:22, marginBottom:8}}>Seu Resultado</h2>
-              <p><b>Ascendente:</b> {resp.ascendente ?? "—"}</p>
-              <p><b>Sol:</b> {resp.sol}</p>
-              <p><b>Lua:</b> {resp.lua}</p>
-              <a className="link" href={resp.pdfUrl} target="_blank" rel="noreferrer">Abrir “PDF”</a>
-            </div>
-          ) : null}
-        </div>
-      </div>
-    </main>
-  )
-}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-4 bg-[#D4AF37] text-[#0F4C5C] font-semibold py-3 rounded-md
