@@ -2,6 +2,18 @@
 import { useState } from "react";
 
 export default function Home() {
+  // Paleta oficial Prema
+  const C = {
+    azul: "#0F4C5C",
+    verde: "#2f6f5e",
+    rosa: "#c47c7c",
+    ouro: "#D4AF37",
+    branco: "#ffffff",
+    cinza: "#f2f2f2",
+    borda: "#e9ecef",
+    textoSuave: "#667085",
+  };
+
   const [loading, setLoading] = useState(false);
   const [resp, setResp] = useState<any>(null);
   const [err, setErr] = useState<string>();
@@ -24,100 +36,182 @@ export default function Home() {
   }
 
   return (
-    <main
-      className="min-h-screen flex items-center justify-center px-4 py-12"
-      style={{ background: "linear-gradient(to bottom, #0F4C5C, #0B2730 60%, #0F4C5C)" }}
-    >
-      <div className="w-full max-w-2xl text-center">
-
-        {/* Título + Subtítulo */}
-        <h1 className="text-3xl md:text-4xl font-serif text-white mb-2">
-          Análise Védica por <span style={{ color: "#D4AF37" }}>Prema Sundari ☾</span>
-        </h1>
-        <p className="text-white/85">
-          Alinhe sua <b>carreira</b> ao seu <b>Dharma</b>: identifique talentos, fortaleça liderança
-          e decida com critérios — não com pressa.
-        </p>
-
-        {/* Mantras + Intenção */}
-        <div className="mt-3 text-white/75 text-sm">
-          <div>तत्त्वमसि · <i>Tat tvam asi</i> — você é isso.</div>
-          <div className="mt-1">Intenção: “Eu escolho servir com competência, coragem e verdade.”</div>
-
-          {/* Mantra Hare Krishna */}
-          <div className="mt-3 italic text-white/80 leading-relaxed">
-            Hare Krishna Hare Krishna Krishna Krishna Hare Hare <br />
-            Hare Rama Hare Rama Rama Rama Hare Hare
-          </div>
-        </div>
-
-        {/* Linha dourada */}
-        <div className="mx-auto mt-4 mb-6" style={{ height: 3, width: 96, background: "#D4AF37", borderRadius: 2 }} />
-
-        {/* Formulário */}
-        <form onSubmit={onSubmit} id="form" className="bg-white rounded-xl shadow-lg p-6 text-left">
-          <label className="block mb-2 text-sm font-medium" style={{color:"#0F4C5C"}}>Nome</label>
-          <input className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4" name="nome" required />
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-2 text-sm font-medium" style={{color:"#0F4C5C"}}>Data de nascimento</label>
-              <input className="w-full border border-gray-300 rounded-md px-3 py-2" type="date" name="data" required />
-            </div>
-            <div>
-              <label className="block mb-2 text-sm font-medium" style={{color:"#0F4C5C"}}>Hora (opcional)</label>
-              <input className="w-full border border-gray-300 rounded-md px-3 py-2" type="time" name="hora" />
-            </div>
-          </div>
-
-          <label className="block mt-4 mb-2 text-sm font-medium" style={{color:"#0F4C5C"}}>Cidade</label>
-          <input className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4" name="cidade" required />
-
-          <label className="block mb-2 text-sm font-medium" style={{color:"#0F4C5C"}}>País</label>
-          <input className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4" name="pais" required />
-
-          <label className="flex items-center gap-2 text-xs text-gray-600 mt-1">
-            <input type="checkbox" name="consent" value="true" required />
-            Concordo em receber meu mapa e comunicações (LGPD).
-          </label>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-4 font-semibold py-3 rounded-md transition hover:brightness-105"
-            style={{ background:"#D4AF37", color:"#0F4C5C" }}
+    <>
+      {/* MAIN — fundo claro e cartão central */}
+      <main
+        style={{
+          minHeight: "100vh",
+          background: C.cinza,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "48px 16px",
+        }}
+      >
+        <div style={{ width: "100%", maxWidth: 720, textAlign: "center" }}>
+          {/* Título + subtítulo profissional */}
+          <h1
+            style={{
+              color: C.azul,
+              fontFamily: "Georgia, serif",
+              fontSize: 32,
+              margin: 0,
+              marginBottom: 8,
+            }}
           >
-            {loading ? "Gerando..." : "Gerar minha análise de carreira"}
-          </button>
-
-          {/* Nota técnica */}
-          <p className="text-xs text-gray-500 mt-3">
-            Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
+            Análise Védica por <span style={{ color: C.ouro }}>Prema Sundari ☾</span>
+          </h1>
+          <p style={{ color: C.verde, marginTop: 4, marginBottom: 20 }}>
+            Alinhe sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
           </p>
 
-          {err && <p className="text-red-600 text-sm mt-2">{err}</p>}
-        </form>
+          {/* CARD — formulário */}
+          <form
+            onSubmit={onSubmit}
+            id="form"
+            style={{
+              margin: "0 auto",
+              maxWidth: 560,
+              textAlign: "left",
+              background: C.branco,
+              border: `1px solid ${C.borda}`,
+              borderRadius: 12,
+              boxShadow: "0 10px 30px rgba(0,0,0,.06)",
+              padding: 20,
+            }}
+          >
+            <label style={{ color: C.azul, fontSize: 14 }}>Nome</label>
+            <input
+              name="nome"
+              required
+              style={{
+                width: "100%", marginTop: 6, marginBottom: 12,
+                border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+              }}
+            />
 
-        {/* Resultado */}
-        {resp && (
-          <div className="bg-white rounded-xl shadow-lg p-6 mt-6 text-left">
-            <h2 className="text-xl font-serif mb-3" style={{color:"#0F4C5C"}}>Seu Resultado</h2>
-            <p><b>Ascendente:</b> {resp.ascendente ?? "—"}</p>
-            <p><b>Sol:</b> {resp.sol}</p>
-            <p><b>Lua:</b> {resp.lua}</p>
-            <a href={resp.pdfUrl} target="_blank" rel="noreferrer" className="underline" style={{color:"#2f6f5e"}}>
-              Abrir PDF
-            </a>
-
-            <div className="mt-4 text-sm" style={{color:"#2f6f5e"}}>
-              <p>
-                Na leitura completa, conecto <b>Casa 10</b> (carreira), <b>Sol</b> (liderança) e <b>Saturno</b> (método)
-                para definir critérios práticos de decisão e próximos passos alinhados ao seu Dharma.
-              </p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div>
+                <label style={{ color: C.azul, fontSize: 14 }}>Data de nascimento</label>
+                <input
+                  type="date" name="data" required
+                  style={{
+                    width: "100%", marginTop: 6,
+                    border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+                  }}
+                />
+              </div>
+              <div>
+                <label style={{ color: C.azul, fontSize: 14 }}>Hora (opcional)</label>
+                <input
+                  type="time" name="hora"
+                  style={{
+                    width: "100%", marginTop: 6,
+                    border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </main>
+
+            <label style={{ color: C.azul, fontSize: 14, marginTop: 12, display: "block" }}>Cidade</label>
+            <input
+              name="cidade" required
+              style={{
+                width: "100%", marginTop: 6, marginBottom: 12,
+                border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+              }}
+            />
+
+            <label style={{ color: C.azul, fontSize: 14 }}>País</label>
+            <input
+              name="pais" required
+              style={{
+                width: "100%", marginTop: 6,
+                border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+              }}
+            />
+
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: C.textoSuave, marginTop: 10 }}>
+              <input type="checkbox" name="consent" value="true" required />
+              Concordo em receber meu mapa e comunicações (LGPD).
+            </label>
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: "100%", marginTop: 14,
+                background: C.ouro, color: C.azul,
+                fontWeight: 700, padding: "12px 18px",
+                borderRadius: 10, border: 0, cursor: "pointer",
+                transition: "filter .2s ease",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.filter = "brightness(1.06)")}
+              onMouseOut={(e) => (e.currentTarget.style.filter = "none")}
+            >
+              {loading ? "Gerando..." : "Gerar minha análise de carreira"}
+            </button>
+
+            {/* Nota técnica */}
+            <p style={{ color: "#98A2B3", fontSize: 12, marginTop: 8 }}>
+              Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
+            </p>
+
+            {err && <p style={{ color: "#B42318", fontSize: 13, marginTop: 6 }}>{err}</p>}
+          </form>
+
+          {/* CARD — resultado (aparece após envio) */}
+          {resp && (
+            <div
+              style={{
+                margin: "16px auto 0", maxWidth: 560, textAlign: "left",
+                background: C.branco, border: `1px solid ${C.borda}`,
+                borderRadius: 12, boxShadow: "0 10px 30px rgba(0,0,0,.06)", padding: 20,
+              }}
+            >
+              <h2 style={{ color: C.azul, fontFamily: "Georgia, serif", fontSize: 22, marginTop: 0 }}>Seu Resultado</h2>
+              <p><b>Ascendente:</b> {resp.ascendente ?? "—"}</p>
+              <p><b>Sol:</b> {resp.sol}</p>
+              <p><b>Lua:</b> {resp.lua}</p>
+              <a
+                href={resp.pdfUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: C.verde, textDecoration: "underline", display: "inline-block", marginTop: 8 }}
+              >
+                Abrir PDF
+              </a>
+
+              <div style={{ color: C.verde, fontSize: 14, marginTop: 12 }}>
+                Na leitura completa, conecto <b>Casa 10</b> (carreira), <b>Sol</b> (liderança) e <b>Saturno</b> (método)
+                para próximos passos alinhados ao seu Dharma.
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* RODAPÉ — azul com mantra */}
+      <footer
+        style={{
+          background: C.azul, color: C.branco, padding: "20px 16px",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            width: 96, height: 3, background: C.ouro,
+            borderRadius: 2, margin: "0 auto 8px",
+          }}
+        />
+        <div style={{ lineHeight: 1.6, fontStyle: "italic", opacity: 0.95 }}>
+          Hare Krishna Hare Krishna Krishna Krishna Hare Hare <br />
+          Hare Rama Hare Rama Rama Rama Hare Hare
+        </div>
+        <div style={{ fontSize: 12, opacity: 0.75, marginTop: 8 }}>
+          © {new Date().getFullYear()} Prema Sundari · Astrologia Védica & Carreira
+        </div>
+      </footer>
+    </>
   );
 }
