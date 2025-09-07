@@ -61,196 +61,157 @@ export default function Home() {
           >
             Análise Védica por <span style={{ color: C.ouro }}>Prema Sundari ☾</span>
           </h1>
-
-          <p
-            className="mt-4"
-            style={{
-              fontFamily: "'Raleway', sans-serif",
-              color: C.verde,
-              fontSize: "1.08rem",
-              maxWidth: 900,
-              margin: "center",
-              lineHeight: 1.6,
-            }}
-          >
-            <b>Esse é o primeiro passo</b> para você alinhar seu <b>Dharma</b> à sua vida
-            profissional com a <b>análise personalizada</b> no <b>método Prema Sundari</b>.
+          <p style={{ color: C.verde, marginTop: 4, marginBottom: 20 }}>
+            Alinhe sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
           </p>
-        </section>
 
-        {/* Card do formulário – somente o espaço necessário; alinhamento centralizado */}
-        <section className="w-full px-6 sm:px-10 pb-12">
-          <div
-            className="mx-auto text-center"
+          {/* CARD — formulário */}
+          <form
+            onSubmit={onSubmit}
+            id="form"
             style={{
+              margin: "0 auto",
+              maxWidth: 560,
+              textAlign: "left",
               background: C.branco,
-              borderRadius: 14,
-              boxShadow:
-                "0 12px 30px rgba(15,76,92,.08), 0 2px 8px rgba(15,76,92,.04)",
-              padding: "28px 22px",
-              maxWidth: 720,
+              border: `1px solid ${C.borda}`,
+              borderRadius: 12,
+              boxShadow: "0 10px 30px rgba(0,0,0,.06)",
+              padding: 20,
             }}
           >
-            <form onSubmit={onSubmit} className="max-w-2xl mx-auto space-y-7">
-              {/* Nome */}
+            <label style={{ color: C.azul, fontSize: 14 }}>Nome</label>
+            <input
+              name="nome"
+              required
+              style={{
+                width: "100%", marginTop: 6, marginBottom: 12,
+                border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+              }}
+            />
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <div>
-                <label
-                  className="block mb-3 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center", letterSpacing: ".2px" }}
-                >
-                  Nome
-                </label>
-                <input name= "nome" required className={inputCls} />
+                <label style={{ color: C.azul, fontSize: 14 }}>Data de nascimento</label>
+                <input
+                  type="date" name="data" required
+                  style={{
+                    width: "100%", marginTop: 6,
+                    border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+                  }}
+                />
               </div>
-
-              {/* Data + Hora exata */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-                <div>
-                  <label
-                    className="block mb-3 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
-                  >
-                    Data de nascimento
-                  </label>
-                  <input type= "date" name= "data" required className={inputCls} />
-                </div>
-
-                <div>
-                  <label
-                    className="block mb-3 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
-                  >
-                    Hora exata (24h)
-                  </label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <select name= "hora" required className={inputCls}>
-                      <option value="" className="hidden"></option>
-                      {horas.map((h) => (
-                        <option key={h} value={h}>{h}</option>
-                      ))}
-                    </select>
-                    <select name="minuto" required className={inputCls}>
-                      <option value="" className="hidden"></option>
-                      {minutos.map((m) => (
-                        <option key={m} value={m}>{m}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Cidade */}
               <div>
-                <label
-                  className="block mb-3 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
-                >
-                  Cidade
-                </label>
-                <input name= "cidade" required className={inputCls} />
+                <label style={{ color: C.azul, fontSize: 14 }}>Hora (opcional)</label>
+                <input
+                  type="time" name="hora"
+                  style={{
+                    width: "100%", marginTop: 6,
+                    border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+                  }}
+                />
               </div>
+            </div>
 
-              {/* País */}
-              <div>
-                <label
-                  className= "block mb-3 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
-                >
-                  País
-                </label>
-                <input name="pais" required className={inputCls} />
+            <label style={{ color: C.azul, fontSize: 14, marginTop: 12, display: "block" }}>Cidade</label>
+            <input
+              name="cidade" required
+              style={{
+                width: "100%", marginTop: 6, marginBottom: 12,
+                border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+              }}
+            />
+
+            <label style={{ color: C.azul, fontSize: 14 }}>País</label>
+            <input
+              name="pais" required
+              style={{
+                width: "100%", marginTop: 6,
+                border: `1px solid ${C.borda}`, borderRadius: 8, padding: "10px 12px"
+              }}
+            />
+
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: C.textoSuave, marginTop: 10 }}>
+              <input type="checkbox" name="consent" value="true" required />
+              Concordo em receber meu mapa e comunicações (LGPD).
+            </label>
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: "100%", marginTop: 14,
+                background: C.ouro, color: C.azul,
+                fontWeight: 700, padding: "12px 18px",
+                borderRadius: 10, border: 0, cursor: "pointer",
+                transition: "filter .2s ease",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.filter = "brightness(1.06)")}
+              onMouseOut={(e) => (e.currentTarget.style.filter = "none")}
+            >
+              {loading ? "Gerando..." : "Gerar minha análise de carreira"}
+            </button>
+
+            {/* Nota técnica */}
+            <p style={{ color: "#98A2B3", fontSize: 12, marginTop: 8 }}>
+              Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
+            </p>
+
+            {err && <p style={{ color: "#B42318", fontSize: 13, marginTop: 6 }}>{err}</p>}
+          </form>
+
+          {/* CARD — resultado (aparece após envio) */}
+          {resp && (
+            <div
+              style={{
+                margin: "16px auto 0", maxWidth: 560, textAlign: "left",
+                background: C.branco, border: `1px solid ${C.borda}`,
+                borderRadius: 12, boxShadow: "0 10px 30px rgba(0,0,0,.06)", padding: 20,
+              }}
+            >
+              <h2 style={{ color: C.azul, fontFamily: "Georgia, serif", fontSize: 22, marginTop: 0 }}>Seu Resultado</h2>
+              <p><b>Ascendente:</b> {resp.ascendente ?? "—"}</p>
+              <p><b>Sol:</b> {resp.sol}</p>
+              <p><b>Lua:</b> {resp.lua}</p>
+              <a
+                href={resp.pdfUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: C.verde, textDecoration: "underline", display: "inline-block", marginTop: 8 }}
+              >
+                Abrir PDF
+              </a>
+
+              <div style={{ color: C.verde, fontSize: 14, marginTop: 12 }}>
+                Na leitura completa, conecto <b>Casa 10</b> (carreira), <b>Sol</b> (liderança) e <b>Saturno</b> (método)
+                para próximos passos alinhados ao seu Dharma.
               </div>
-
-              {/* E-mail + WhatsApp */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-                <div>
-                  <label
-                    className="block mb-3 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
-                  >
-                    E-mail
-                  </label>
-                  <input type= "email" name="email" required className={inputCls} />
-                </div>
-                <div>
-                  <label
-                    className= "block mb-3 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
-                  >
-                    WhatsApp (cód. país + DDD + número)
-                  </label>
-                  <input
-                    type= "tel"
-                    name= "telefone"
-                    required
-                    pattern="[\d\s()+-]{9,}"
-                    title="Digite um telefone válido (ex.: +55 11 91234-5678)"
-                    className={inputCls}
-                  />
-                </div>
-              </div>
-
-              {/* Consentimento */}
-              <label
-                className="flex items-center gap-2 text-xs justify-center"
-                style={{ color: "#6B7280", fontFamily: "'Raleway', sans-serif" }}
-              >
-                <input type="checkbox" name="consent" required className="h-4 w-4" />
-                Concordo em receber meu mapa e comunicações (LGPD).
-              </label>
-
-              {/* CTA */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full h-12 rounded-md font-semibold transition"
-                style={{
-                  background: "linear-gradient(180deg, #EAD37A, #D4AF37 60%, #B88A1E)",
-                  color: C.azul,
-                  boxShadow: "0 10px 24px rgba(212,175,55,.25), inset 0 1px 0 rgba(255,255,255,.6)",
-                  fontFamily: "'Raleway', sans-serif",
-                  letterSpacing: ".2px",
-                }}
-              >
-                {loading ? "Gerando..." : "Gerar minha análise de carreira"}
-              </button>
-
-              {/* Sistema */}
-              <p
-                className="text-center text-xs"
-                style={{ color: "#7A8691", fontFamily: "'Raleway', sans-serif" }}
-              >
-                Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
-              </p>
-
-              {err && (
-                <p
-                  className="text-center text-sm text-red-600"
-                  style={{ fontFamily: "'Raleway', sans-serif" }}
-                >
-                  {err}
-                </p>
-              )}
-            </form>
-          </div>
-        </section>
-
-        {/* Rodapé – Mahā-mantra discreto centralizado */}
-        <footer className="w-full text-center pb-10 px-6">
-          <p
-            className="max-w-2xl mx-auto"
-            style={{
-              fontFamily: "'Raleway', sans-serif",
-              color: "#6b7b83",
-              fontSize: ".82rem",
-              lineHeight: 1.6,
-            }}
-          >
-            Hare Krishna Hare Krishna • Krishna Krishna Hare Hare •
-            Hare Rama Hare Rama • Rama Rama Hare Hare
-          </p>
-        </footer>
+            </div>
+          )}
+        </div>
       </main>
+
+      {/* RODAPÉ — azul com mantra */}
+      <footer
+        style={{
+          background: C.azul, color: C.branco, padding: "20px 16px",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            width: 96, height: 3, background: C.ouro,
+            borderRadius: 2, margin: "0 auto 8px",
+          }}
+        />
+        <div style={{ lineHeight: 1.6, fontStyle: "italic", opacity: 0.95 }}>
+          Hare Krishna Hare Krishna Krishna Krishna Hare Hare <br />
+          Hare Rama Hare Rama Rama Rama Hare Hare
+        </div>
+        <div style={{ fontSize: 12, opacity: 0.75, marginTop: 8 }}>
+          © {new Date().getFullYear()} Prema Sundari · Astrologia Védica & Carreira
+        </div>
+      </footer>
     </>
   );
 }
