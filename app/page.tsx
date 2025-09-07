@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function Page() {
   // Paleta Prema
   const C = {
-    azul: "#0F4C5C",
+    azul:  "#0F4C5C",
     verde: "#2f6f5e",
     ouro:  "#D4AF37",
     branco:"#ffffff",
@@ -18,7 +18,7 @@ export default function Page() {
   const inputCls =
     "w-full h-12 px-4 rounded-md bg-white border border-[#E6E8EA] " +
     "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/18 focus:border-[#0F4C5C] transition " +
-    "placeholder-transparent"; // sem exemplos
+    "placeholder-transparent";
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,15 +35,15 @@ export default function Page() {
       if (!r.ok) throw new Error(j.error || "Erro ao enviar dados");
       alert("Dados enviados com sucesso! Em breve você receberá sua análise.");
       (e.currentTarget as HTMLFormElement).reset();
-    } catch (e:any) {
+    } catch (e: any) {
       setErr(e.message);
     } finally {
       setLoading(false);
     }
   }
 
-  // Helpers para selects de hora/minuto
-  const horas = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
+  // Opções para hora exata
+  const horas   = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
   const minutos = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
 
   return (
@@ -56,13 +56,13 @@ export default function Page() {
         />
       </Head>
 
-      {/* Fundo claro, com respiro lateral; conteúdo centralizado */}
+      {/* Fundo claro; tudo centralizado */}
       <main
         className="min-h-screen w-full flex flex-col items-center justify-start"
         style={{ background: C.cinza }}
       >
-        {/* Cabeçalho */}
-        <section className="w-full max-w-5xl mx-auto text-center px-5 sm:px-8 lg:px-10 pt-16 pb-6">
+        {/* Cabeçalho centralizado */}
+        <section className="w-full max-w-5xl text-center px-6 sm:px-10 pt-16 pb-4">
           <h1
             className="leading-tight"
             style={{
@@ -75,19 +75,23 @@ export default function Page() {
           </h1>
 
           <p
-            className="mt-3"
+            className="mt-4"
             style={{
               fontFamily: "'Raleway', sans-serif",
               color: C.verde,
-              fontSize: "1.06rem",
+              fontSize: "1.08rem",
+              maxWidth: 900,
+              margin: "0 auto",
+              lineHeight: 1.6,
             }}
           >
-            Esse é o primeiro passo para alinhar sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
+            <b>Esse é o primeiro passo</b> para você alinhar seu <b>Dharma</b> à sua vida
+            profissional com a <b>análise personalizada</b> e o <b>Método Prema Sundari</b>.
           </p>
         </section>
 
-        {/* Formulário: card enxuto, somente o espaço necessário */}
-        <section className="w-full mx-auto px-5 sm:px-8 lg:px-10 pb-10">
+        {/* Card do formulário – somente o espaço necessário; 100% central */}
+        <section className="w-full px-6 sm:px-10 pb-12">
           <div
             className="mx-auto text-center"
             style={{
@@ -95,42 +99,53 @@ export default function Page() {
               borderRadius: 14,
               boxShadow:
                 "0 12px 30px rgba(15,76,92,.08), 0 2px 8px rgba(15,76,92,.04)",
-              padding: "24px 18px",
-              maxWidth: 720, // mantém caixas centralizadas e card enxuto
+              padding: "28px 22px",
+              maxWidth: 720,
             }}
           >
-            <form onSubmit={onSubmit} className="space-y-6 md:space-y-7 max-w-2xl mx-auto">
+            <form onSubmit={onSubmit} className="max-w-2xl mx-auto space-y-7">
               {/* Nome */}
               <div>
-                <label className="block mb-2 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                <label
+                  className="block mb-3 text-sm"
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center", letterSpacing: ".2px" }}
+                >
                   Nome
                 </label>
                 <input name="nome" required className={inputCls} />
               </div>
 
-              {/* Data + Hora exata (hora e minuto obrigatórios) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Data + Hora exata */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
                 <div>
-                  <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                  <label
+                    className="block mb-3 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
+                  >
                     Data de nascimento
                   </label>
                   <input type="date" name="data" required className={inputCls} />
                 </div>
+
                 <div>
-                  <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                  <label
+                    className="block mb-3 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
+                  >
                     Hora exata (24h)
                   </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <select name="hora" required className={inputCls.replace("h-12","h-12")}>
+                  <div className="grid grid-cols-2 gap-4">
+                    <select name="hora" required className={inputCls}>
                       <option value="" className="hidden"></option>
-                      {horas.map(h => <option key={h} value={h}>{h}</option>)}
+                      {horas.map((h) => (
+                        <option key={h} value={h}>{h}</option>
+                      ))}
                     </select>
-                    <select name="minuto" required className={inputCls.replace("h-12","h-12")}>
+                    <select name="minuto" required className={inputCls}>
                       <option value="" className="hidden"></option>
-                      {minutos.map(m => <option key={m} value={m}>{m}</option>)}
+                      {minutos.map((m) => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -138,8 +153,10 @@ export default function Page() {
 
               {/* Cidade */}
               <div>
-                <label className="block mb-2 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                <label
+                  className="block mb-3 text-sm"
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
+                >
                   Cidade
                 </label>
                 <input name="cidade" required className={inputCls} />
@@ -147,25 +164,31 @@ export default function Page() {
 
               {/* País */}
               <div>
-                <label className="block mb-2 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                <label
+                  className="block mb-3 text-sm"
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
+                >
                   País
                 </label>
                 <input name="pais" required className={inputCls} />
               </div>
 
-              {/* E-mail + WhatsApp (obrigatórios) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* E-mail + WhatsApp */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
                 <div>
-                  <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                  <label
+                    className="block mb-3 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
+                  >
                     E-mail
                   </label>
                   <input type="email" name="email" required className={inputCls} />
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                  <label
+                    className="block mb-3 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
+                  >
                     WhatsApp (cód. país + DDD + número)
                   </label>
                   <input
@@ -180,8 +203,10 @@ export default function Page() {
               </div>
 
               {/* Consentimento */}
-              <label className="flex items-center gap-2 text-xs justify-center"
-                style={{ color: "#6B7280", fontFamily: "'Raleway', sans-serif" }}>
+              <label
+                className="flex items-center gap-2 text-xs justify-center"
+                style={{ color: "#6B7280", fontFamily: "'Raleway', sans-serif" }}
+              >
                 <input type="checkbox" name="consent" required className="h-4 w-4" />
                 Concordo em receber meu mapa e comunicações (LGPD).
               </label>
@@ -194,24 +219,27 @@ export default function Page() {
                 style={{
                   background: "linear-gradient(180deg, #EAD37A, #D4AF37 60%, #B88A1E)",
                   color: C.azul,
-                  boxShadow:
-                    "0 10px 24px rgba(212,175,55,.25), inset 0 1px 0 rgba(255,255,255,.6)",
+                  boxShadow: "0 10px 24px rgba(212,175,55,.25), inset 0 1px 0 rgba(255,255,255,.6)",
                   fontFamily: "'Raleway', sans-serif",
-                  letterSpacing: ".2px"
+                  letterSpacing: ".2px",
                 }}
               >
                 {loading ? "Gerando..." : "Gerar minha análise de carreira"}
               </button>
 
               {/* Sistema */}
-              <p className="text-center text-xs"
-                style={{ color: "#7A8691", fontFamily: "'Raleway', sans-serif" }}>
+              <p
+                className="text-center text-xs"
+                style={{ color: "#7A8691", fontFamily: "'Raleway', sans-serif" }}
+              >
                 Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
               </p>
 
               {err && (
-                <p className="text-center text-sm text-red-600"
-                  style={{ fontFamily: "'Raleway', sans-serif" }}>
+                <p
+                  className="text-center text-sm text-red-600"
+                  style={{ fontFamily: "'Raleway', sans-serif" }}
+                >
                   {err}
                 </p>
               )}
