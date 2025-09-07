@@ -1,42 +1,13 @@
-/* --- CÉU NOTURNO --- */
-.night {
-  min-height: 100vh;
-  background:
-    radial-gradient(1200px 600px at 50% -10%, rgba(201,162,39,.25), transparent 60%),
-    radial-gradient(800px 400px at 10% 10%, rgba(15,76,92,.35), transparent 60%),
-    radial-gradient(800px 400px at 90% 20%, rgba(47,111,94,.25), transparent 60%),
-    linear-gradient(#0B2730, #0F4C5C 60%, #0B2730);
-  color: var(--prema-white);
+:root{
+  --prema-azul:#0F4C5C; --prema-verde:#2f6f5e; --prema-rosa:#c47c7c;
+  --prema-branco:#ffffff; --prema-cinza:#f2f2f2; --prema-ouro:#C9A227;
 }
 
-/* estrelas (3 camadas para profundidade) */
-.stars, .stars::before, .stars::after {
-  content: "";
-  position: fixed; inset: 0;
-  background-repeat: repeat;
-  background-size: 2px 2px;
-  pointer-events: none;
-}
-.stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff 50%, transparent 51%); opacity: .25; }
-.stars::before { background-image: radial-gradient(1px 1px at 60px 80px, #fff 50%, transparent 51%); opacity: .18; transform: translateY(-10%); }
-.stars::after  { background-image: radial-gradient(1px 1px at 120px 160px, #fff 50%, transparent 51%); opacity: .12; transform: translateY(-20%); }
+html,body{ background:#f2f2f2; color:var(--prema-azul); font-family:Georgia,serif; }
 
-/* cartão translúcido (vidro) */
-.card-night {
-  background: rgba(255,255,255,.09);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
-}
-
-/* botão dourado/rosa sobre escuro */
-.btn        { background: var(--prema-rosa); color: #fff; padding: 12px 20px; border-radius: 8px; border:0; }
-.btn:hover  { filter: brightness(1.03); box-shadow: 0 8px 18px rgba(196,124,124,.35); }
-.btn-ouro   { background: var(--prema-ouro); color:#111; }
-.btn-ouro:hover { box-shadow: 0 8px 18px rgba(201,162,39,.35); }
-
-/* filetes e ícones dourados */
-.hr-ouro { height:2px; width:88px; margin:12px auto; background: var(--prema-ouro); border-radius: 2px; }
-.moon   { color: var(--prema-ouro); }
+.card{ background:#fff; border:1px solid #eaeaea; border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08); padding:24px; }
+.input{ width:100%; border:1px solid #ccdade; border-radius:8px; padding:10px; }
+.btn{ background:#0F4C5C; color:#fff; padding:12px 18px; border-radius:8px; border:0; }
+.btn:hover{ background:#0d4050 }
+.link{ color:var(--prema-verde); text-decoration:underline; }
