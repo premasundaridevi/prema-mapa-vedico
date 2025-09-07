@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --prema-dark: #0F4C5C;
+  --prema-green: #2f6f5e;
+  --prema-rose: #c47c7c;
+  --prema-white: #ffffff;
+  --prema-light: #f2f2f2;
+  --prema-gold: #d4af37;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--prema-light);
+  color: var(--prema-dark);
+  font-family: 'Georgia', serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  color: var(--prema-dark);
+}
+
+a {
+  color: var(--prema-rose);
+  text-decoration: none;
+}
+
+button {
+  background-color: var(--prema-dark);
+  color: var(--prema-white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: var(--prema-gold);
+  color: var(--prema-dark);
 }
