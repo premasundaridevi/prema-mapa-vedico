@@ -1,132 +1,65 @@
-// lib/astro.ts
-import swe from "swisseph";
-import tzlookup from "tz-lookup";
-import { DateTime } from "luxon";
+// pages/api/mapa.ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { formatSvg } from "../../lib/wheel";
 
-swe.swe_set_ephe_path(process.cwd() + "/public/ephe"); // caminho dos arquivos
+// Util: converte "signo + grau" em grau absoluto (0–360)
+// Ex.: "Leão", 15 → 120 + 15 = 135
+const SIGN_INDEX: Record<string, number> = {
+  "Áries":0, "Touro":1, "Gêmeos":2, "Câncer":3, "Leão":4, "Virgem":5,
+  "Libra":6, "Escorpião":7, "Sagitário":8, "Capricórnio":9, "Aquário":10, "Peixes":11
+};
+function signoToDeg(signo: string, grau: number) {
+  const idx = SIGN_INDEX[signo] ?? 0;
+  return (idx * 30 + (grau || 0)) % 360;
+}
 
-export type BirthInput = {
-  date: string;   // "YYYY-MM-DD"
-  hour: string;   // "00".."23"
-  minute: string; // "00".."59"
-  city: string;
-  country: string;
-  lat: number;    // decimais: -23.55
-  lon: number;    // decimais: -46.63 (Oeste negativo)
+export const config = {
+  api: { bodyParser: true }, // rodando em Node (não Edge)
 };
 
-export type ChartResult = {
-  ascendente: string;
-  sol: string;
-  lua: string;
-  chartSvg: string; // SVG puro (string)
-};
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Método não permitido" });
+  }
 
-export function getTimezoneId(lat: number, lon: number) {
-  return tzlookup(lat, lon); // ex.: "America/Sao_Paulo"
-}
+  try {
+    const {
+      nome, data, hora, minuto,
+      cidade, pais, email, telefone
+    } = (req.body || {}) as Record<string,string>;
 
-export function toJulianDayUTC(d: Date) {
-  // Swiss usa JD; aqui um atalho via swisseph:
-  const yyyy = d.getUTCFullYear();
-  const mm = d.getUTCMonth() + 1;
-  const dd = d.getUTCDate();
-  const hh = d.getUTCHours() + d.getUTCMinutes()/60 + d.getUTCSeconds()/3600;
-  return swe.swe_julday(yyyy, mm, dd, hh, swe.SE_GREG_CAL);
-}
+    // Validação mínima (ajuste como preferir)
+    if (!nome || !data || !cidade || !pais || !email || !telefone) {
+      return res.status(400).json({ error: "Campos obrigatórios faltando." });
+    }
 
-function dms(angle: number) {
-  // Normaliza 0..360 e quebra em graus/minutos
-  const a = ((angle % 360) + 360) % 360;
-  const deg = Math.floor(a);
-  const min = Math.floor((a - deg) * 60);
-  return `${deg}°${String(min).padStart(2, "0")}'`;
-}
+    // -------------------------------------------------------------------
+    // 🔁  (FASE 1 — DEMO) Simulação de ângulos para visualizar a roda
+    // Troque por cálculos REAIS depois (Swiss Ephemeris, Lahiri).
+    // Exemplo: vamos fingir que veio "Asc: Leão 10º, Sol: Escorpião 17º, Lua: Touro 3º"
+    const ascDeg  = signoToDeg("Leão", 10);        // 130°
+    const sunDeg  = signoToDeg("Escorpião", 17);   // 227°
+    const moonDeg = signoToDeg("Touro", 3);        // 63°
+    // -------------------------------------------------------------------
 
-function lahiriSidereal() {
-  // usa ayanamsha Lahiri (Chitrapaksha)
-  swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
-}
+    // Gera o SVG
+    const svg = formatSvg({ asc: ascDeg, sun: sunDeg, moon: moonDeg });
 
-export async function computeChart(input: BirthInput): Promise<ChartResult> {
-  lahiriSidereal();
+    // **Opcional:** se quiser retornar dataURL (pronto pra <img src="...">):
+    const svgBase64 = Buffer.from(svg, "utf8").toString("base64");
+    const dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
 
-  // 1) Fuso horário a partir de lat/lon
-  const tz = getTimezoneId(input.lat, input.lon);
-  const local = DateTime.fromISO(`${input.date}T${input.hour}:${input.minute}`, { zone: tz });
-  const utc = local.toUTC();
+    // Monte o payload (mantendo seu contrato atual)
+    return res.status(200).json({
+      ascendente: 
+      sol: 
+      lua:
+      pdfUrl: "/exemplo.pdf",
+      chartSvg: svg,        // SVG puro (p/ usar com dangerouslySetInnerHTML)
+      chartDataUrl: dataUrl // Data URL (p/ usar direto em <img src=...>)
+    });
 
-  // 2) Julian Day (UTC)
-  const jd = toJulianDayUTC(utc.toJSDate());
-
-  // 3) Posições (siderais)
-  const flags = swe.SEFLG_SIDEREAL | swe.SEFLG_SWIEPH | swe.SEFLG_SPEED;
-
-  const sun = swe.swe_calc_ut(jd, swe.SE_SUN, flags);
-  const moon = swe.swe_calc_ut(jd, swe.SE_MOON, flags);
-  const asc  = swe.swe_houses(jd, input.lat, input.lon, "P"); // Placidus
-  const ascDeg = asc.ascendant;
-
-  const solStr  = dms(sun.longitude);
-  const luaStr  = dms(moon.longitude);
-  const ascStr  = dms(ascDeg);
-
-  // 4) Gera um SVG minimalista da roda (placeholder bonito)
-  const svg = buildWheelSvg(ascDeg, sun.longitude, moon.longitude);
-
-  return {
-    ascendente: ascStr,
-    sol: solStr,
-    lua: luaStr,
-    chartSvg: svg,
-  };
-}
-
-// --- Wheel SVG simples/limpo (você pode sofisticar depois) ---
-function buildWheelSvg(asc: number, sun: number, moon: number): string {
-  const size = 520, r = 220, cx = size/2, cy = size/2;
-  const axis = (deg: number, len = r) => {
-    const rad = (deg - 90) * Math.PI/180;
-    const x = cx + len * Math.cos(rad);
-    const y = cy + len * Math.sin(rad);
-    return `${x},${y}`;
-  };
-  const marker = (label: string, deg: number, color: string) => {
-    const rad = (deg - 90) * Math.PI/180;
-    const x = cx + (r-30) * Math.cos(rad);
-    const y = cy + (r-30) * Math.sin(rad);
-    return `
-      <circle cx="${x}" cy="${y}" r="6" fill="${color}" />
-      <text x="${x}" y="${y-10}" font-size="12" text-anchor="middle" fill="#0F4C5C" font-family="Raleway">${label}</text>
-    `;
-  };
-
-  return `
-<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-  <defs>
-    <linearGradient id="gold" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#EAD37A"/>
-      <stop offset="0.6" stop-color="#D4AF37"/>
-      <stop offset="1" stop-color="#B88A1E"/>
-    </linearGradient>
-  </defs>
-
-  <circle cx="${cx}" cy="${cy}" r="${r}" fill="white" stroke="#e9ecef" stroke-width="2"/>
-  <circle cx="${cx}" cy="${cy}" r="${r-50}" fill="none" stroke="#f2f2f2"/>
-  <!-- eixos 12 casas -->
-  ${Array.from({length:12},(_,i)=>{
-    const deg=i*30;
-    return `<line x1="${cx}" y1="${cy}" x2="${axis(deg)}" stroke="#e9ecef" stroke-width="1"/>`;
-  }).join("")}
-
-  <!-- Asc (linha destacada) -->
-  <line x1="${cx}" y1="${cy}" x2="${axis(asc)}" stroke="url(#gold)" stroke-width="3"/>
-
-  <!-- marcadores -->
-  ${marker("☉", sun, "#2f6f5e")}
-  ${marker("☾", moon, "#c47c7c")}
-  ${marker("Asc", asc, "#0F4C5C")}
-
-  <circle cx="${cx}" cy="${cy}" r="3" fill="#0F4C5C"/>
-</svg>`.trim();
+  } catch (err: any) {
+    return res.status(500).json({ error: "Erro ao gerar mapa", detail: err?.message });
+  }
 }
