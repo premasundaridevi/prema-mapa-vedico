@@ -78,7 +78,7 @@ export default function Page() {
               fontSize: "1.06rem",
             }}
           >
-            Alinhe sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
+            Esse é o primeiro passo para alinhar sua <b>carreira</b> ao seu <b>Dharma</b> em direção a prosperidade absoluta.
           </p>
         </section>
 
