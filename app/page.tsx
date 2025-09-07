@@ -126,7 +126,7 @@ export default function Home() {
               </div>
               <div>
                 <label style={{ color: C.azul, fontSize: 14 }}>
-                  Hora (opcional)
+                  Hora
                 </label>
                 <input
                   type="time"
