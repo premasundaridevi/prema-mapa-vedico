@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 
 export default function Page() {
@@ -12,9 +13,7 @@ export default function Page() {
     setErr(null);
     setResp(null);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
 
     try {
       const res = await fetch("/api/mapa", {
@@ -34,7 +33,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-12">
-      {/* Título */}
+      {/* Título + subtítulo (centralizado como no print) */}
       <h1 className="text-3xl md:text-4xl font-serif font-bold text-center text-[#0F4C5C] mb-2">
         Análise Védica por <span className="text-[#c9a227]">Prema Sundari ☾</span>
       </h1>
@@ -42,7 +41,7 @@ export default function Page() {
         Alinhe sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
       </p>
 
-      {/* Formulário (layout da sua captura) */}
+      {/* Card do formulário — mesmo visual do seu layout */}
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md space-y-4"
@@ -85,7 +84,7 @@ export default function Page() {
           className="w-full p-3 border rounded-md"
         />
 
-        {/* Campos de lead */}
+        {/* Leads — adicionados sem mudar o layout */}
         <input
           type="email"
           name="email"
@@ -98,7 +97,7 @@ export default function Page() {
           name="telefone"
           placeholder="Telefone (com DDD)"
           required
-          pattern="[\d\s()+-]{9,}" // aceita números e símbolos comuns
+          pattern="[\d\s()+-]{9,}"
           title="Digite um telefone válido (ex.: 11 91234-5678)"
           className="w-full p-3 border rounded-md"
         />
@@ -123,39 +122,34 @@ export default function Page() {
         {err && <p className="text-sm text-red-600 text-center mt-2">{err}</p>}
       </form>
 
-      {/* Resultado */}
+      {/* Resultado (aparece abaixo do card) */}
       {resp && (
         <div className="mt-8 bg-white p-6 rounded-lg shadow-md max-w-md w-full text-center">
           <h2 className="text-xl font-serif mb-2 text-[#0F4C5C]">Seu Resultado</h2>
-          <p>
-            <b>Ascendente:</b> {resp.ascendente ?? "--"}
-          </p>
-          <p>
-            <b>Sol:</b> {resp.sol}
-          </p>
-          <p>
-            <b>Lua:</b> {resp.lua}
-          </p>
-          <a
-            href={resp.pdfUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-block underline text-[#2f6f5e]"
-          >
-            Abrir PDF
-          </a>
+          <p><b>Ascendente:</b> {resp.ascendente ?? "--"}</p>
+          <p><b>Sol:</b> {resp.sol}</p>
+          <p><b>Lua:</b> {resp.lua}</p>
+          {resp.pdfUrl && (
+            <a
+              href={resp.pdfUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-block underline text-[#2f6f5e]"
+            >
+              Abrir PDF
+            </a>
+          )}
 
           <div className="mt-4 text-sm text-[#2f6f5e]">
             <p>
               Na leitura completa, conecto <b>Casa 10</b> (carreira), <b>Sol</b> (liderança) e{" "}
-              <b>Saturno</b> (método)
+              <b>Saturno</b> (método) para seus próximos passos alinhados ao Dharma.
             </p>
-            <p>para definir critérios práticos e próximos passos alinhados ao seu Dharma.</p>
           </div>
         </div>
       )}
 
-      {/* Rodapé com mantra */}
+      {/* Mantra no rodapé */}
       <footer className="mt-12 text-center text-sm text-[#c47c7c] italic">
         Hare Krishna Hare Krishna Krishna Krishna Hare Hare <br />
         Hare Rama Hare Rama Rama Rama Hare Hare
