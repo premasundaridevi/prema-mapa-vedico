@@ -1,74 +1,62 @@
 "use client";
-import Head from "next/head";
 import { useState } from "react";
 
-export default function Page() {
-  // Paleta Prema
+export default function Home() {
+  // Paleta oficial Prema
   const C = {
-    azul:  "#0F4C5C",
+    azul: "#0F4C5C",
     verde: "#2f6f5e",
-    ouro:  "#D4AF37",
-    branco:"#ffffff",
+    rosa: "#c47c7c",
+    ouro: "#D4AF37",
+    branco: "#ffffff",
     cinza: "#f2f2f2",
+    borda: "#e9ecef",
+    textoSuave: "#667085",
   };
 
   const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const [resp, setResp] = useState<any>(null);
+  const [err, setErr] = useState<string>();
 
-  const inputCls =
-    "w-full h-12 px-4 rounded-md bg-white border border centralizado -[#E6E8EA] " +
-    "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/18 focus:border-[#0F4C5C] transition " +
-    "placeholder-transparent";
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: any) {
     e.preventDefault();
-    setLoading(true); setErr(null);
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+    setLoading(true);
+    setErr(undefined);
+    const body = Object.fromEntries(new FormData(e.target).entries());
 
-    try {
-      const r = await fetch("/api/mapa", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const j = await r.json();
-      if (!r.ok) throw new Error(j.error || "Erro ao enviar dados");
-      alert("Dados enviados com sucesso! Em breve você receberá sua análise.");
-      (e.currentTarget as HTMLFormElement).reset();
-    } catch (e: any) {
-      setErr(e.message);
-    } finally {
-      setLoading(false);
-    }
+    const r = await fetch("/api/mapa", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const j = await r.json();
+    if (!r.ok) { setErr(j.error || "Erro ao gerar mapa"); setLoading(false); return; }
+    setResp(j); setLoading(false);
   }
-
-  // Opções para hora exata
-  const horas   = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
-  const minutos = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
 
   return (
     <>
-      <Head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-
-      {/* Fundo claro; tudo centralizado */}
+      {/* MAIN — fundo claro e cartão central */}
       <main
-        className="min-h-screen w-full flex flex-col items-center justify-start"
-        style={{ background: C.cinza }}
+        style={{
+          minHeight: "100vh",
+          background: C.cinza,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "48px 16px",
+        }}
       >
-        {/*Cabeçalho centralizado*/}
-        <section className="w-full max-w-5xl text-center px-6 sm:px-10 pt-16 pb-4">
+        <div style={{ width: "100%", maxWidth: 720, textAlign: "center" }}>
+          {/* Título + subtítulo profissional */}
           <h1
-            className="leading-tight"
             style={{
-              fontFamily: "'Playfair Display', serif",
               color: C.azul,
-              fontSize: "2.6rem",
+              fontFamily: "Georgia, serif",
+              fontSize: 32,
+              margin: 0,
+              marginBottom: 8,
             }}
           >
             Análise Védica por <span style={{ color: C.ouro }}>Prema Sundari ☾</span>
@@ -81,7 +69,7 @@ export default function Page() {
               color: C.verde,
               fontSize: "1.08rem",
               maxWidth: 900,
-              margin: "auto",
+              margin: "center",
               lineHeight: 1.6,
             }}
           >
