@@ -16,7 +16,7 @@ export default function Page() {
   const [err, setErr] = useState<string | null>(null);
 
   const inputCls =
-    "w-full h-12 px-4 rounded-md bg-white border border-[#E6E8EA] " +
+    "w-full h-12 px-4 rounded-md bg-white border border centralizado -[#E6E8EA] " +
     "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/18 focus:border-[#0F4C5C] transition " +
     "placeholder-transparent";
 
@@ -61,7 +61,7 @@ export default function Page() {
         className="min-h-screen w-full flex flex-col items-center justify-start"
         style={{ background: C.cinza }}
       >
-        {/* Cabeçalho centralizado */}
+        {/*Cabeçalho centralizado*/}
         <section className="w-full max-w-5xl text-center px-6 sm:px-10 pt-16 pb-4">
           <h1
             className="leading-tight"
@@ -112,7 +112,7 @@ export default function Page() {
                 >
                   Nome
                 </label>
-                <input name="nome" required className={inputCls} />
+                <input name= "nome" required className={inputCls} />
               </div>
 
               {/* Data + Hora exata */}
@@ -124,7 +124,7 @@ export default function Page() {
                   >
                     Data de nascimento
                   </label>
-                  <input type="date" name="data" required className={inputCls} />
+                  <input type= "date" name= "data" required className={inputCls} />
                 </div>
 
                 <div>
@@ -135,7 +135,7 @@ export default function Page() {
                     Hora exata (24h)
                   </label>
                   <div className="grid grid-cols-2 gap-4">
-                    <select name="hora" required className={inputCls}>
+                    <select name= "hora" required className={inputCls}>
                       <option value="" className="hidden"></option>
                       {horas.map((h) => (
                         <option key={h} value={h}>{h}</option>
@@ -159,13 +159,13 @@ export default function Page() {
                 >
                   Cidade
                 </label>
-                <input name="cidade" required className={inputCls} />
+                <input name= "cidade" required className={inputCls} />
               </div>
 
               {/* País */}
               <div>
                 <label
-                  className="block mb-3 text-sm"
+                  className= "block mb-3 text-sm"
                   style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
                 >
                   País
@@ -182,18 +182,18 @@ export default function Page() {
                   >
                     E-mail
                   </label>
-                  <input type="email" name="email" required className={inputCls} />
+                  <input type= "email" name="email" required className={inputCls} />
                 </div>
                 <div>
                   <label
-                    className="block mb-3 text-sm"
+                    className= "block mb-3 text-sm"
                     style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}
                   >
                     WhatsApp (cód. país + DDD + número)
                   </label>
                   <input
-                    type="tel"
-                    name="telefone"
+                    type= "tel"
+                    name= "telefone"
                     required
                     pattern="[\d\s()+-]{9,}"
                     title="Digite um telefone válido (ex.: +55 11 91234-5678)"
