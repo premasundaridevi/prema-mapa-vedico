@@ -1,111 +1,203 @@
 "use client";
+import Head from "next/head";
 import { useState } from "react";
 
-export default function AnaliseVedicaForm() {
-  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+export default function Page() {
+  // Paleta Prema
+  const C = {
+    azul: "#0F4C5C",
+    verde: "#2f6f5e",
+    ouro:  "#D4AF37",
+    branco:"#ffffff",
+    cinza: "#f2f2f2",
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const inputCls =
+    "w-full h-12 px-4 rounded-md bg-white border border-[#E6E8EA] " +
+    "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/18 focus:border-[#0F4C5C] transition " +
+    "placeholder-transparent"; // sem exemplos
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(form);
-    // Aqui entra integração com backend ou API
-  };
+    setLoading(true); setErr(null);
+    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+
+    try {
+      const r = await fetch("/api/mapa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "Erro ao enviar dados");
+      alert("Dados enviados com sucesso! Em breve você receberá sua análise.");
+      (e.currentTarget as HTMLFormElement).reset();
+    } catch (e:any) {
+      setErr(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#fdfdfd] to-[#f2f2f2] px-6">
-      <div className="max-w-lg w-full text-center space-y-10 p-10">
-        {/* Título */}
-        <h1 className="text-4xl md:text-5xl font-playfair font-bold text-[#0F4C5C] tracking-wide leading-snug">
-          Análise Védica por Prema Sundari
-        </h1>
+    <>
+      <Head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
 
-        {/* Frase de impacto */}
-        <p className="text-lg md:text-xl font-raleway text-[#2f6f5e] leading-relaxed">
-          Receba uma análise personalizada com o método{" "}
-          <span className="text-[#c47c7c] font-semibold">Prema Sundari</span>{" "}
-          de Astrologia Védica e Aromaterapia.  
-          Um mergulho profundo em autoconhecimento e espiritualidade.
-        </p>
-
-        {/* Formulário */}
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6 text-left max-w-md mx-auto"
-        >
-          <div className="flex flex-col">
-            <label className="text-[#0F4C5C] font-raleway text-sm mb-2">
-              Nome completo
-            </label>
-            <input
-              type="text"
-              name="nome"
-              value={form.nome}
-              onChange={handleChange}
-              required
-              className="px-4 py-3 border border-[#c47c7c]/40 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c47c7c]"
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="text-[#0F4C5C] font-raleway text-sm mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="px-4 py-3 border border-[#c47c7c]/40 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c47c7c]"
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="text-[#0F4C5C] font-raleway text-sm mb-2">
-              Telefone
-            </label>
-            <input
-              type="tel"
-              name="telefone"
-              value={form.telefone}
-              onChange={handleChange}
-              required
-              className="px-4 py-3 border border-[#c47c7c]/40 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c47c7c]"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 bg-[#c47c7c] text-white font-raleway font-semibold tracking-wide rounded-md shadow-lg hover:bg-[#b36b6b] transition"
+      {/* Fundo claro, centralizado, com respiro lateral */}
+      <main
+        className="min-h-screen w-full flex flex-col items-center"
+        style={{ background: C.cinza }}
+      >
+        {/* Cabeçalho */}
+        <section className="w-full max-w-5xl mx-auto text-center px-5 sm:px-8 lg:px-10 pt-16 pb-6">
+          <h1
+            className="leading-tight"
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              color: C.azul,
+              fontSize: "2.6rem",
+            }}
           >
-            Solicitar minha análise
-          </button>
-        </form>
+            Análise Védica por <span style={{ color: C.ouro }}>Prema Sundari ☾</span>
+          </h1>
 
-        {/* Mantras */}
-        <div className="mt-10 text-center space-y-4">
-          <p className="text-sm md:text-base text-[#2f6f5e] italic leading-relaxed">
-            Hare Krishna Hare Krishna <br />
-            Krishna Krishna Hare Hare <br />
-            Hare Rama Hare Rama <br />
-            Rama Rama Hare Hare
+          <p
+            className="mt-3"
+            style={{
+              fontFamily: "'Raleway', sans-serif",
+              color: C.verde,
+              fontSize: "1.06rem",
+            }}
+          >
+            Alinhe sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
           </p>
+        </section>
 
-          <p className="text-xs md:text-sm text-[#0F4C5C]/80 leading-relaxed">
-            सर्वे भवन्तु सुखिनः <br />
-            सर्वे सन्तु निरामयाः <br />
-            सर्वे भद्राणि पश्यन्तु <br />
-            मा कश्चिद् दुःखभाग्भवेत्
-          </p>
+        {/* Card do formulário */}
+        <section className="w-full max-w-3xl mx-auto px-5 sm:px-8 lg:px-10 pb-20">
+          <div
+            className="mx-auto"
+            style={{
+              background: C.branco,
+              borderRadius: 14,
+              boxShadow:
+                "0 12px 30px rgba(15,76,92,.08), 0 2px 8px rgba(15,76,92,.04)",
+              padding: "28px 22px",
+            }}
+          >
+            <form onSubmit={onSubmit} className="space-y-6 md:space-y-7 max-w-2xl mx-auto">
+              <div>
+                <label className="block mb-2 text-sm"
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                  Nome
+                </label>
+                <input name="nome" required className={inputCls} />
+              </div>
 
-          <p className="text-xs md:text-sm text-[#2f6f5e] italic">
-            “Que todos os seres sejam livres e felizes”
-          </p>
-        </div>
-      </div>
-    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block mb-2 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                    Data de nascimento
+                  </label>
+                  <input type="date" name="data" required className={inputCls} />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                    Hora (opcional)
+                  </label>
+                  <input type="time" name="hora" className={inputCls} />
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm"
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                  Cidade
+                </label>
+                <input name="cidade" required className={inputCls} />
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm"
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                  País
+                </label>
+                <input name="pais" required className={inputCls} />
+              </div>
+
+              {/* Novos campos obrigatórios */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block mb-2 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                    E-mail
+                  </label>
+                  <input type="email" name="email" required className={inputCls} />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm"
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                    WhatsApp (cód. país + DDD + número)
+                  </label>
+                  <input
+                    type="tel"
+                    name="telefone"
+                    required
+                    pattern="[\d\s()+-]{9,}"
+                    title="Digite um telefone válido (ex.: +55 11 91234-5678)"
+                    className={inputCls}
+                  />
+                </div>
+              </div>
+
+              <label className="flex items-center gap-2 text-xs justify-center"
+                style={{ color: "#6B7280", fontFamily: "'Raleway', sans-serif" }}>
+                <input type="checkbox" name="consent" required className="h-4 w-4" />
+                Concordo em receber meu mapa e comunicações (LGPD).
+              </label>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full h-12 rounded-md font-semibold transition"
+                style={{
+                  background: "linear-gradient(180deg, #EAD37A, #D4AF37 60%, #B88A1E)",
+                  color: C.azul,
+                  boxShadow:
+                    "0 10px 24px rgba(212,175,55,.25), inset 0 1px 0 rgba(255,255,255,.6)",
+                  fontFamily: "'Raleway', sans-serif",
+                  letterSpacing: ".2px"
+                }}
+              >
+                {loading ? "Gerando..." : "Gerar minha análise de carreira"}
+              </button>
+
+              <p className="text-center text-xs"
+                style={{ color: "#7A8691", fontFamily: "'Raleway', sans-serif" }}>
+                Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
+              </p>
+
+              {err && (
+                <p className="text-center text-sm text-red-600"
+                  style={{ fontFamily: "'Raleway', sans-serif" }}>
+                  {err}
+                </p>
+              )}
+            </form>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
