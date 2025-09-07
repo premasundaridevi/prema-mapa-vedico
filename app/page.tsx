@@ -86,11 +86,11 @@ export default function Page() {
             }}
           >
             <b>Esse é o primeiro passo</b> para você alinhar seu <b>Dharma</b> à sua vida
-            profissional com a <b>análise personalizada</b> e o <b>Método Prema Sundari</b>.
+            profissional com a <b>análise personalizada</b> no <b>Método Prema Sundari</b>.
           </p>
         </section>
 
-        {/* Card do formulário – somente o espaço necessário; 100% central */}
+        {/* Card do formulário – somente o espaço necessário; centralizado */}
         <section className="w-full px-6 sm:px-10 pb-12">
           <div
             className="mx-auto text-center"
@@ -247,7 +247,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Rodapé – Mahā-mantra discreto */}
+        {/* Rodapé – Mahā-mantra discreto centralizado */}
         <footer className="w-full text-center pb-10 px-6">
           <p
             className="max-w-2xl mx-auto"
