@@ -125,19 +125,20 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label style={{ color: C.azul, fontSize: 14 }}>
-                  Hora
-                </label>
-                <input
-                  type="time"
-                  name="hora"
-                  style={{
-                    width: "100%",
-                    marginTop: 6,
-                    border: `1px solid ${C.borda}`,
-                    borderRadius: 8,
-                    padding: "10px 12px",
-                  }}
+                <label style={{ color: C.azul, fontSize: 14 }}>Data de nascimento</label>
+<input
+  type="date"
+  name="data"
+  required
+  style={{
+    width: "100%", marginTop: 6,
+    border: `1px solid ${C.borda}`,
+    borderRadius: 8,
+    padding: "10px 12px"
+  }}
+  pattern="\d{4}-\d{2}-\d{2}"  // força o formato YYYY-MM-DD
+  placeholder="AAAA-MM-DD"
+/>
                 />
               </div>
             </div>
