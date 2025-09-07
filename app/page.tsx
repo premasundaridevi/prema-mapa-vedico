@@ -3,157 +3,105 @@
 import { useState } from "react";
 
 export default function Page() {
-  const [loading, setLoading] = useState(false);
-  const [resp, setResp] = useState<any>(null);
-  const [err, setErr] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    nome: "",
+    data: "",
+    hora: "",
+    local: "",
+    email: "",
+    telefone: "",
+  });
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setErr(null);
-    setResp(null);
-
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-
-    try {
-      const res = await fetch("/api/mapa", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Erro ao gerar mapa");
-      setResp(json);
-    } catch (error: any) {
-      setErr(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
+    console.log("Dados enviados:", form);
+  };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-12">
-      {/* Título + subtítulo (centralizado como no print) */}
-      <h1 className="text-3xl md:text-4xl font-serif font-bold text-center text-[#0F4C5C] mb-2">
-        Análise Védica por <span className="text-[#c9a227]">Prema Sundari ☾</span>
-      </h1>
-      <p className="text-center text-[#2f6f5e] mb-8">
-        Alinhe sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
-      </p>
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0F4C5C] to-[#2f6f5e] text-white px-6">
+      <div className="bg-[#0F4C5C]/70 backdrop-blur-md p-10 rounded-xl shadow-2xl w-full max-w-md text-center space-y-6">
+        {/* Título */}
+        <h1 className="text-3xl font-bold text-[#FFD700]">
+          Análise Védica por Prema Sundari
+        </h1>
+        <p className="text-sm text-gray-200">
+          Conecte-se com sua essência através do mapa astrológico védico 🌙
+        </p>
 
-      {/* Card do formulário — mesmo visual do seu layout */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md space-y-4"
-      >
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome"
-          required
-          className="w-full p-3 border rounded-md"
-        />
-
-        <div className="flex gap-4">
+        {/* Formulário */}
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome completo"
+            value={form.nome}
+            onChange={handleChange}
+            required
+            className="p-3 rounded-md border border-gray-300 text-black"
+          />
           <input
             type="date"
             name="data"
+            value={form.data}
+            onChange={handleChange}
             required
-            className="w-1/2 p-3 border rounded-md"
+            className="p-3 rounded-md border border-gray-300 text-black"
           />
           <input
             type="time"
             name="hora"
-            placeholder="Hora (opcional)"
-            className="w-1/2 p-3 border rounded-md"
+            value={form.hora}
+            onChange={handleChange}
+            required
+            className="p-3 rounded-md border border-gray-300 text-black"
           />
-        </div>
+          <input
+            type="text"
+            name="local"
+            placeholder="Local de nascimento"
+            value={form.local}
+            onChange={handleChange}
+            required
+            className="p-3 rounded-md border border-gray-300 text-black"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="p-3 rounded-md border border-gray-300 text-black"
+          />
+          <input
+            type="tel"
+            name="telefone"
+            placeholder="Telefone"
+            value={form.telefone}
+            onChange={handleChange}
+            required
+            className="p-3 rounded-md border border-gray-300 text-black"
+          />
 
-        <input
-          type="text"
-          name="cidade"
-          placeholder="Cidade"
-          required
-          className="w-full p-3 border rounded-md"
-        />
-        <input
-          type="text"
-          name="pais"
-          placeholder="País"
-          required
-          className="w-full p-3 border rounded-md"
-        />
+          {/* Botão */}
+          <button
+            type="submit"
+            className="mt-4 bg-[#FFD700] text-[#0F4C5C] font-bold py-3 px-6 rounded-lg hover:bg-[#e6c200] transition"
+          >
+            Gerar meu mapa
+          </button>
+        </form>
 
-        {/* Leads — adicionados sem mudar o layout */}
-        <input
-          type="email"
-          name="email"
-          placeholder="E-mail"
-          required
-          className="w-full p-3 border rounded-md"
-        />
-        <input
-          type="tel"
-          name="telefone"
-          placeholder="Telefone (com DDD)"
-          required
-          pattern="[\d\s()+-]{9,}"
-          title="Digite um telefone válido (ex.: 11 91234-5678)"
-          className="w-full p-3 border rounded-md"
-        />
-
-        <label className="flex items-center text-xs text-gray-600">
-          <input type="checkbox" name="consent" required className="mr-2" />
-          Concordo em receber meu mapa e comunicações (LGPD).
-        </label>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-3 rounded-md font-semibold text-white bg-[#c9a227] hover:bg-[#b38c1d] transition"
-        >
-          {loading ? "Gerando..." : "Gerar minha análise de carreira"}
-        </button>
-
-        <p className="text-xs text-center text-gray-500 mt-2">
-          Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
-        </p>
-
-        {err && <p className="text-sm text-red-600 text-center mt-2">{err}</p>}
-      </form>
-
-      {/* Resultado (aparece abaixo do card) */}
-      {resp && (
-        <div className="mt-8 bg-white p-6 rounded-lg shadow-md max-w-md w-full text-center">
-          <h2 className="text-xl font-serif mb-2 text-[#0F4C5C]">Seu Resultado</h2>
-          <p><b>Ascendente:</b> {resp.ascendente ?? "--"}</p>
-          <p><b>Sol:</b> {resp.sol}</p>
-          <p><b>Lua:</b> {resp.lua}</p>
-          {resp.pdfUrl && (
-            <a
-              href={resp.pdfUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-4 inline-block underline text-[#2f6f5e]"
-            >
-              Abrir PDF
-            </a>
-          )}
-
-          <div className="mt-4 text-sm text-[#2f6f5e]">
-            <p>
-              Na leitura completa, conecto <b>Casa 10</b> (carreira), <b>Sol</b> (liderança) e{" "}
-              <b>Saturno</b> (método) para seus próximos passos alinhados ao Dharma.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Mantra no rodapé */}
-      <footer className="mt-12 text-center text-sm text-[#c47c7c] italic">
-        Hare Krishna Hare Krishna Krishna Krishna Hare Hare <br />
-        Hare Rama Hare Rama Rama Rama Hare Hare
-      </footer>
+        {/* Mantra */}
+        <footer className="mt-6 text-xs text-gray-300 italic">
+          Hare Krishna Hare Krishna Krishna Krishna Hare Hare <br />
+          Hare Rama Hare Rama Rama Rama Hare Hare
+        </footer>
+      </div>
     </main>
   );
 }
