@@ -42,6 +42,10 @@ export default function Page() {
     }
   }
 
+  // Helpers para selects de hora/minuto
+  const horas = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
+  const minutos = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
+
   return (
     <>
       <Head>
@@ -52,9 +56,9 @@ export default function Page() {
         />
       </Head>
 
-      {/* Fundo claro, centralizado, com respiro lateral */}
+      {/* Fundo claro, com respiro lateral; conteúdo centralizado */}
       <main
-        className="min-h-screen w-full flex flex-col items-center"
+        className="min-h-screen w-full flex flex-col items-center justify-start"
         style={{ background: C.cinza }}
       >
         {/* Cabeçalho */}
@@ -78,76 +82,90 @@ export default function Page() {
               fontSize: "1.06rem",
             }}
           >
-            Esse é o primeiro passo para alinhar sua <b>carreira</b> ao seu <b>Dharma</b> em direção a prosperidade absoluta.
+            Esse é o primeiro passo para alinhar sua <b>carreira</b> ao seu <b>Dharma</b> com clareza e método.
           </p>
         </section>
 
-        {/* Card do formulário */}
-        <section className="w-full max-w-3xl mx-auto px-5 sm:px-8 lg:px-10 pb-20">
+        {/* Formulário: card enxuto, somente o espaço necessário */}
+        <section className="w-full mx-auto px-5 sm:px-8 lg:px-10 pb-10">
           <div
-            className="mx-auto"
+            className="mx-auto text-center"
             style={{
               background: C.branco,
               borderRadius: 14,
               boxShadow:
                 "0 12px 30px rgba(15,76,92,.08), 0 2px 8px rgba(15,76,92,.04)",
-              padding: "28px 22px",
+              padding: "24px 18px",
+              maxWidth: 720, // mantém caixas centralizadas e card enxuto
             }}
           >
             <form onSubmit={onSubmit} className="space-y-6 md:space-y-7 max-w-2xl mx-auto">
+              {/* Nome */}
               <div>
                 <label className="block mb-2 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
                   Nome
                 </label>
                 <input name="nome" required className={inputCls} />
               </div>
 
+              {/* Data + Hora exata (hora e minuto obrigatórios) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
                     Data de nascimento
                   </label>
                   <input type="date" name="data" required className={inputCls} />
                 </div>
                 <div>
                   <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
-                    Hora (opcional)
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
+                    Hora exata (24h)
                   </label>
-                  <input type="time" name="hora" className={inputCls} />
+                  <div className="grid grid-cols-2 gap-3">
+                    <select name="hora" required className={inputCls.replace("h-12","h-12")}>
+                      <option value="" className="hidden"></option>
+                      {horas.map(h => <option key={h} value={h}>{h}</option>)}
+                    </select>
+                    <select name="minuto" required className={inputCls.replace("h-12","h-12")}>
+                      <option value="" className="hidden"></option>
+                      {minutos.map(m => <option key={m} value={m}>{m}</option>)}
+                    </select>
+                  </div>
                 </div>
               </div>
 
+              {/* Cidade */}
               <div>
                 <label className="block mb-2 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
                   Cidade
                 </label>
                 <input name="cidade" required className={inputCls} />
               </div>
 
+              {/* País */}
               <div>
                 <label className="block mb-2 text-sm"
-                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                  style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
                   País
                 </label>
                 <input name="pais" required className={inputCls} />
               </div>
 
-              {/* Novos campos obrigatórios */}
+              {/* E-mail + WhatsApp (obrigatórios) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
                     E-mail
                   </label>
                   <input type="email" name="email" required className={inputCls} />
                 </div>
                 <div>
                   <label className="block mb-2 text-sm"
-                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                    style={{ color: C.azul, fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>
                     WhatsApp (cód. país + DDD + número)
                   </label>
                   <input
@@ -161,12 +179,14 @@ export default function Page() {
                 </div>
               </div>
 
+              {/* Consentimento */}
               <label className="flex items-center gap-2 text-xs justify-center"
                 style={{ color: "#6B7280", fontFamily: "'Raleway', sans-serif" }}>
                 <input type="checkbox" name="consent" required className="h-4 w-4" />
                 Concordo em receber meu mapa e comunicações (LGPD).
               </label>
 
+              {/* CTA */}
               <button
                 type="submit"
                 disabled={loading}
@@ -183,6 +203,7 @@ export default function Page() {
                 {loading ? "Gerando..." : "Gerar minha análise de carreira"}
               </button>
 
+              {/* Sistema */}
               <p className="text-center text-xs"
                 style={{ color: "#7A8691", fontFamily: "'Raleway', sans-serif" }}>
                 Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
@@ -197,6 +218,22 @@ export default function Page() {
             </form>
           </div>
         </section>
+
+        {/* Rodapé – Mahā-mantra discreto */}
+        <footer className="w-full text-center pb-10 px-6">
+          <p
+            className="max-w-2xl mx-auto"
+            style={{
+              fontFamily: "'Raleway', sans-serif",
+              color: "#6b7b83",
+              fontSize: ".82rem",
+              lineHeight: 1.6,
+            }}
+          >
+            Hare Krishna Hare Krishna • Krishna Krishna Hare Hare •
+            Hare Rama Hare Rama • Rama Rama Hare Hare
+          </p>
+        </footer>
       </main>
     </>
   );
