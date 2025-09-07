@@ -81,16 +81,16 @@ export default function Page() {
               color: C.verde,
               fontSize: "1.08rem",
               maxWidth: 900,
-              margin: "0 auto",
+              margin: "auto",
               lineHeight: 1.6,
             }}
           >
             <b>Esse é o primeiro passo</b> para você alinhar seu <b>Dharma</b> à sua vida
-            profissional com a <b>análise personalizada</b> no <b>Método Prema Sundari</b>.
+            profissional com a <b>análise personalizada</b> no <b>método Prema Sundari</b>.
           </p>
         </section>
 
-        {/* Card do formulário – somente o espaço necessário; centralizado */}
+        {/* Card do formulário – somente o espaço necessário; alinhamento centralizado */}
         <section className="w-full px-6 sm:px-10 pb-12">
           <div
             className="mx-auto text-center"
