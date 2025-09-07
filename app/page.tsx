@@ -37,10 +37,14 @@ export default function Home() {
       }}
     >
       <div className="w-full max-w-2xl text-center">
-        <h1 className="text-3xl md:text-4xl font-serif text-white mb-6">
-          Mapa Védico da Prema Sundari{" "}
-          <span style={{ color: "#D4AF37" }}>☾</span>
+        {/* TÍTULO */}
+        <h1 className="text-3xl md:text-4xl font-serif text-white mb-2">
+          Análise Védica por{" "}
+          <span style={{ color: "#D4AF37" }}>Prema Sundari ☾</span>
         </h1>
+        <p className="text-white/80 mb-6">
+          Descubra sua essência através do Jyotish — a ciência da luz.
+        </p>
 
         {/* CARTÃO DO FORMULÁRIO */}
         <form
@@ -107,4 +111,40 @@ export default function Home() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-4 bg-[#D4AF37] text-[#0F4C5C] font-semibold py-3 rounded-md
+            className="w-full mt-4 bg-[#D4AF37] text-[#0F4C5C] font-semibold py-3 rounded-md transition hover:brightness-105"
+          >
+            {loading ? "Gerando..." : "Gerar Mapa"}
+          </button>
+
+          {err && <p className="text-red-500 text-sm mt-2">{err}</p>}
+        </form>
+
+        {/* CARTÃO DO RESULTADO */}
+        {resp && (
+          <div className="bg-white rounded-xl shadow-lg p-6 mt-6 text-left">
+            <h2 className="text-xl font-serif mb-3 text-prema-azul">
+              Seu Resultado
+            </h2>
+            <p>
+              <b>Ascendente:</b> {resp.ascendente ?? "—"}
+            </p>
+            <p>
+              <b>Sol:</b> {resp.sol}
+            </p>
+            <p>
+              <b>Lua:</b> {resp.lua}
+            </p>
+            <a
+              href={resp.pdfUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-prema-verde underline mt-2 inline-block"
+            >
+              Abrir PDF
+            </a>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
