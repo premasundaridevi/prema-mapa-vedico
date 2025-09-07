@@ -26,3 +26,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).json({ error: e.message });
   }
 }
+
+<p><b>Ascendente:</b> {resp.ascendente}</p>
+
+{resp.chartSVG && (
+  <div
+    dangerouslySetInnerHTML={{ __html: resp.chartSVG }}
+    style={{ maxWidth: "100%", marginTop: 20 }}
+  />
+)}
