@@ -10,21 +10,20 @@ export default function Page() {
     rosa: "#c47c7c",
     branco: "#ffffff",
     cinza: "#f2f2f2",
-    ouro: "#D4AF37"
+    ouro:  "#D4AF37",
   };
-
-  const inputCls =
-    "w-full h-12 px-4 border border-gray-300 rounded-md bg-white placeholder-gray-400 " +
-    "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/20 focus:border-[#0F4C5C] transition";
 
   const [loading, setLoading] = useState(false);
   const [resp, setResp] = useState<any>(null);
   const [err, setErr] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const inputCls =
+    "w-full h-12 px-4 border border-gray-300 rounded-md bg-white placeholder-gray-400 " +
+    "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/20 focus:border-[#0F4C5C] transition";
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true); setErr(null); setResp(null);
-
     const data = Object.fromEntries(new FormData(e.currentTarget).entries());
     try {
       const r = await fetch("/api/mapa", {
@@ -35,17 +34,15 @@ export default function Page() {
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Erro ao gerar mapa");
       setResp(j);
-    } catch (e: any) {
+    } catch (e:any) {
       setErr(e.message);
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   }
 
   return (
     <>
       <Head>
-        {/* Tipografias profissionais */}
+        {/* Tipografias */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600&display=swap"
@@ -53,105 +50,92 @@ export default function Page() {
         />
       </Head>
 
-      <main
-        className="min-h-screen w-full flex items-center justify-center px-6"
-        style={{ background: C.cinza }}
-      >
+      {/* Fundo limpo, sem card */}
+      <main className="min-h-screen w-full flex items-center justify-center px-6"
+            style={{ background: "#f2f2f2" }}>
         <div className="w-full max-w-3xl mx-auto py-14 md:py-20 text-center">
           {/* Título */}
           <h1
-            className="mb-3 leading-tight"
-            style={{
-              color: C.azul,
-              fontFamily: "'Playfair Display', serif",
-              fontSize: "2.4rem",
-            }}
+            className="leading-tight mb-4"
+            style={{ fontFamily: "'Playfair Display', serif", color: C.azul, fontSize: "2.6rem" }}
           >
             Análise Védica por <span style={{ color: C.ouro }}>Prema Sundari ☾</span>
           </h1>
 
-          {/* Subfrase assinatura */}
+          {/* Frase assinatura */}
           <p
             className="mb-10 md:mb-12"
-            style={{
-              color: C.verde,
-              fontFamily: "'Raleway', sans-serif",
-              fontSize: "1.05rem",
-            }}
+            style={{ fontFamily: "'Raleway', sans-serif", color: C.verde, fontSize: "1.06rem" }}
           >
-            Receba uma análise personalizada com o{" "}
-            <b>Método Prema Sundari</b> de <b>análise astrológica</b> e{" "}
-            <b>aromaterapia</b>.
+            Receba uma análise personalizada com o <b>Método Prema Sundari</b> de{" "}
+            <b>análise astrológica</b> e <b>aromaterapia</b>.
           </p>
 
-          {/* Formulário – vertical, espaçado, responsivo */}
-          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-7 text-left mx-auto" style={{ maxWidth: 720 }}>
-            <div>
-              <label className="block mb-2 text-sm" style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
-                Nome
+          {/* Formulário centralizado — espaçado e responsivo */}
+          <form onSubmit={onSubmit} className="space-y-7 md:space-y-8 mx-auto" style={{ maxWidth: 720 }}>
+            <div className="text-center">
+              <label className="block mb-2 text-sm"
+                     style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                Nome completo
               </label>
               <input name="nome" required className={inputCls} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block mb-2 text-sm" style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+              <div className="text-center">
+                <label className="block mb-2 text-sm"
+                       style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
                   Data de nascimento
                 </label>
                 <input type="date" name="data" required className={inputCls} />
               </div>
-              <div>
-                <label className="block mb-2 text-sm" style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+              <div className="text-center">
+                <label className="block mb-2 text-sm"
+                       style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
                   Hora (opcional)
                 </label>
                 <input type="time" name="hora" className={inputCls} />
               </div>
             </div>
 
-            <div>
-              <label className="block mb-2 text-sm" style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
-                Cidade
+            <div className="text-center">
+              <label className="block mb-2 text-sm"
+                     style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                Local de nascimento (cidade/UF ou cidade mais próxima)
               </label>
               <input name="cidade" required className={inputCls} />
             </div>
 
-            <div>
-              <label className="block mb-2 text-sm" style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
-                País
-              </label>
-              <input name="pais" required className={inputCls} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block mb-2 text-sm" style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+              <div className="text-center">
+                <label className="block mb-2 text-sm"
+                       style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
                   E-mail
                 </label>
                 <input type="email" name="email" required className={inputCls} />
               </div>
-              <div>
-                <label className="block mb-2 text-sm" style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
-                  Telefone (com DDD)
+              <div className="text-center">
+                <label className="block mb-2 text-sm"
+                       style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
+                  WhatsApp (código do país + DDD + número)
                 </label>
                 <input
-                  type="tel"
-                  name="telefone"
-                  required
+                  type="tel" name="telefone" required
                   pattern="[\d\s()+-]{9,}"
-                  title="Digite um telefone válido (ex.: 11 91234-5678)"
+                  title="Digite um telefone válido (ex.: +55 11 91234-5678)"
                   className={inputCls}
                 />
               </div>
             </div>
 
-            <label className="flex items-center gap-2 text-xs" style={{ color: "#6B7280", fontFamily: "'Raleway', sans-serif" }}>
+            <label className="flex items-center justify-center gap-2 text-xs"
+                   style={{ color: "#6B7280", fontFamily: "'Raleway', sans-serif" }}>
               <input type="checkbox" name="consent" required className="h-4 w-4" />
               Concordo em receber meu mapa e comunicações (LGPD).
             </label>
 
             <button
-              type="submit"
-              disabled={loading}
+              type="submit" disabled={loading}
               className="w-full h-12 rounded-md font-semibold transition"
               style={{
                 background: "linear-gradient(180deg, #E7C65A, #D4AF37 60%, #B88A1E)",
@@ -163,24 +147,24 @@ export default function Page() {
               {loading ? "Gerando..." : "Gerar minha análise de carreira"}
             </button>
 
-            <p className="text-center text-xs" style={{ color: "#7A8691", fontFamily: "'Raleway', sans-serif" }}>
+            <p className="text-center text-xs"
+               style={{ color: "#7A8691", fontFamily: "'Raleway', sans-serif" }}>
               Sistema: zodíaco sideral · Ayanāṁśa Lahiri (Chitrapaksha)
             </p>
 
             {err && (
-              <p className="text-sm text-red-600 text-center" style={{ fontFamily: "'Raleway', sans-serif" }}>
+              <p className="text-sm text-red-600 text-center"
+                 style={{ fontFamily: "'Raleway', sans-serif" }}>
                 {err}
               </p>
             )}
           </form>
 
-          {/* Resultado (aparece abaixo) */}
+          {/* Resultado (opcional) */}
           {resp && (
             <div className="mt-10 text-center" style={{ fontFamily: "'Raleway', sans-serif" }}>
-              <h2
-                className="mb-4"
-                style={{ color: C.azul, fontFamily: "'Playfair Display', serif", fontSize: "1.5rem" }}
-              >
+              <h2 className="mb-4"
+                  style={{ color: C.azul, fontFamily: "'Playfair Display', serif", fontSize: "1.5rem" }}>
                 Seu Resultado
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4" style={{ color: C.verde }}>
@@ -189,33 +173,26 @@ export default function Page() {
                 <p><b>Lua:</b> {resp.lua}</p>
               </div>
               {resp.pdfUrl && (
-                <a
-                  href={resp.pdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline inline-block mt-4"
-                  style={{ color: C.verde }}
-                >
+                <a href={resp.pdfUrl} target="_blank" rel="noreferrer"
+                   className="underline inline-block mt-4" style={{ color: C.verde }}>
                   Abrir PDF
                 </a>
               )}
             </div>
           )}
 
-          {/* Mantras no rodapé */}
-          <div className="mt-14 space-y-3">
-            <p
-              className="italic"
-              style={{ color: C.rosa, fontFamily: "'Playfair Display', serif" }}
-            >
-              हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे ।<br />
-              हरे राम हरे राम राम राम हरे हरे ॥
-            </p>
-            <p
-              className="text-sm"
-              style={{ color: C.verde, fontFamily: "'Raleway', sans-serif" }}
-            >
+          {/* Mantras */}
+          <div className="mt-14 space-y-3 text-center">
+            {/* Lokah Samastah em sânscrito (mantemos em sânscrito como pedido anterior) */}
+            <p className="text-sm"
+               style={{ color: C.verde, fontFamily: "'Raleway', sans-serif" }}>
               लोकाः समस्ताः सुखिनो भवन्तु । ॐ शान्तिः शान्तिः शान्तिः ॥
+            </p>
+            {/* Mahāmantra — transliterado (não em sânscrito) */}
+            <p className="italic"
+               style={{ color: C.rosa, fontFamily: "'Playfair Display', serif" }}>
+              Hare Krishna Hare Krishna Krishna Krishna Hare Hare •
+              Hare Rama Hare Rama Rama Rama Hare Hare
             </p>
           </div>
         </div>
