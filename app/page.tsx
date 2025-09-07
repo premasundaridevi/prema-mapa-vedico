@@ -50,7 +50,7 @@ export default function Home() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "48px 16px",
+          padding: "46px 14px",
         }}
       >
         <div style={{ width: "100%", maxWidth: 720, textAlign: "center" }}>
