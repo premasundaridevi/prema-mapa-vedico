@@ -9,8 +9,9 @@ export default function Page() {
     verde: "#2f6f5e",
     rosa: "#c47c7c",
     branco: "#ffffff",
-    cinza: "#f2f2f2",
-    ouro:  "#D4AF37",
+    cinza: "#f6f7f6",     // fundo delicado
+    linha: "#E9ECEF",     // divisórias hairline
+    ouro:  "#D4AF37"      // dourado sutil
   };
 
   const [loading, setLoading] = useState(false);
@@ -18,8 +19,9 @@ export default function Page() {
   const [err, setErr] = useState<string | null>(null);
 
   const inputCls =
-    "w-full h-12 px-4 border border-gray-300 rounded-md bg-white placeholder-gray-400 " +
-    "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/20 focus:border-[#0F4C5C] transition";
+    "w-full h-12 px-4 rounded-md bg-white border border-[#E6E8EA] " +
+    "placeholder-gray-400 transition " +
+    "focus:outline-none focus:ring-2 focus:ring-[#0F4C5C]/18 focus:border-[#0F4C5C]";
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,35 +52,58 @@ export default function Page() {
         />
       </Head>
 
-      {/* Fundo limpo, sem card */}
+      {/* Fundo leve, sem card/bloco */}
       <main className="min-h-screen w-full flex items-center justify-center px-6"
-            style={{ background: "#f2f2f2" }}>
+            style={{ background: C.cinza }}>
         <div className="w-full max-w-3xl mx-auto py-14 md:py-20 text-center">
-          {/* Título */}
+          {/* Cabeçalho */}
           <h1
-            className="leading-tight mb-4"
-            style={{ fontFamily: "'Playfair Display', serif", color: C.azul, fontSize: "2.6rem" }}
+            className="leading-tight"
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              color: C.azul,
+              fontSize: "2.5rem",
+              letterSpacing: "0.2px"
+            }}
           >
             Análise Védica por <span style={{ color: C.ouro }}>Prema Sundari ☾</span>
           </h1>
 
-          {/* Frase assinatura */}
+          {/* filete dourado delicado */}
+          <div className="flex items-center justify-center gap-3 mt-3 mb-5">
+            <span style={{ width: 56, height: 1, background: C.linha }} />
+            <span
+              style={{
+                width: 8, height: 8, background: C.ouro, borderRadius: 9999,
+                boxShadow: "0 0 0 4px rgba(212,175,55,.18)"
+              }}
+            />
+            <span style={{ width: 56, height: 1, background: C.linha }} />
+          </div>
+
           <p
-            className="mb-10 md:mb-12"
-            style={{ fontFamily: "'Raleway', sans-serif", color: C.verde, fontSize: "1.06rem" }}
+            style={{
+              fontFamily: "'Raleway', sans-serif",
+              color: C.verde,
+              fontSize: "1.02rem",
+              lineHeight: 1.6
+            }}
           >
             Receba uma análise personalizada com o <b>Método Prema Sundari</b> de{" "}
             <b>análise astrológica</b> e <b>aromaterapia</b>.
           </p>
 
-          {/* Formulário centralizado — espaçado e responsivo */}
+          {/* divisória hairline */}
+          <div className="my-8" style={{ height: 1, background: C.linha }} />
+
+          {/* Formulário — mesma estrutura, mais delicado e com respiro */}
           <form onSubmit={onSubmit} className="space-y-7 md:space-y-8 mx-auto" style={{ maxWidth: 720 }}>
             <div className="text-center">
               <label className="block mb-2 text-sm"
                      style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
                 Nome completo
               </label>
-              <input name="nome" required className={inputCls} />
+              <input name="nome" placeholder="Ex.: Ana Maria Silva" required className={inputCls} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
@@ -103,7 +128,7 @@ export default function Page() {
                      style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
                 Local de nascimento (cidade/UF ou cidade mais próxima)
               </label>
-              <input name="cidade" required className={inputCls} />
+              <input name="cidade" placeholder="Ex.: São Paulo, SP, Brasil" required className={inputCls} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
@@ -112,7 +137,7 @@ export default function Page() {
                        style={{ color: C.azul, fontFamily: "'Raleway', sans-serif" }}>
                   E-mail
                 </label>
-                <input type="email" name="email" required className={inputCls} />
+                <input type="email" name="email" placeholder="Ex.: voce@email.com" required className={inputCls} />
               </div>
               <div className="text-center">
                 <label className="block mb-2 text-sm"
@@ -121,6 +146,7 @@ export default function Page() {
                 </label>
                 <input
                   type="tel" name="telefone" required
+                  placeholder="Ex.: +55 11 91234-5678"
                   pattern="[\d\s()+-]{9,}"
                   title="Digite um telefone válido (ex.: +55 11 91234-5678)"
                   className={inputCls}
@@ -138,10 +164,11 @@ export default function Page() {
               type="submit" disabled={loading}
               className="w-full h-12 rounded-md font-semibold transition"
               style={{
-                background: "linear-gradient(180deg, #E7C65A, #D4AF37 60%, #B88A1E)",
+                background: "linear-gradient(180deg, #EAD37A, #D4AF37 60%, #B88A1E)",
                 color: C.azul,
-                boxShadow: "0 10px 24px rgba(212,175,55,.30), inset 0 1px 0 rgba(255,255,255,.6)",
+                boxShadow: "0 10px 24px rgba(212,175,55,.25), inset 0 1px 0 rgba(255,255,255,.6)",
                 fontFamily: "'Raleway', sans-serif",
+                letterSpacing: ".2px"
               }}
             >
               {loading ? "Gerando..." : "Gerar minha análise de carreira"}
@@ -160,11 +187,11 @@ export default function Page() {
             )}
           </form>
 
-          {/* Resultado (opcional) */}
+          {/* Resultado (quando houver) */}
           {resp && (
             <div className="mt-10 text-center" style={{ fontFamily: "'Raleway', sans-serif" }}>
               <h2 className="mb-4"
-                  style={{ color: C.azul, fontFamily: "'Playfair Display', serif", fontSize: "1.5rem" }}>
+                  style={{ color: C.azul, fontFamily: "'Playfair Display', serif", fontSize: "1.45rem" }}>
                 Seu Resultado
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4" style={{ color: C.verde }}>
@@ -181,17 +208,31 @@ export default function Page() {
             </div>
           )}
 
-          {/* Mantras */}
-          <div className="mt-14 space-y-3 text-center">
-            {/* Lokah Samastah em sânscrito (mantemos em sânscrito como pedido anterior) */}
+          {/* divisória */}
+          <div className="my-12" style={{ height: 1, background: C.linha }} />
+
+          {/* Mantras — delicados e centralizados */}
+          <div className="space-y-4 text-center">
+            {/* Lokah Samastah (sânscrito) + tradução */}
             <p className="text-sm"
-               style={{ color: C.verde, fontFamily: "'Raleway', sans-serif" }}>
+               style={{ color: C.verde, fontFamily: "'Raleway', sans-serif", lineHeight: 1.7 }}>
               लोकाः समस्ताः सुखिनो भवन्तु । ॐ शान्तिः शान्तिः शान्तिः ॥
             </p>
-            {/* Mahāmantra — transliterado (não em sânscrito) */}
+            <p className="text-xs"
+               style={{ color: "#6B7A7A", fontFamily: "'Raleway', sans-serif" }}>
+              “Que todos os seres, em todos os lugares, sejam felizes e livres; e que os
+              pensamentos, palavras e ações da minha própria vida contribuam, de alguma forma,
+              para essa felicidade e liberdade para todos.”
+            </p>
+
+            {/* Mahāmantra — transliterado (sem sânscrito) */}
             <p className="italic"
-               style={{ color: C.rosa, fontFamily: "'Playfair Display', serif" }}>
-              Hare Krishna Hare Krishna Krishna Krishna Hare Hare •
+               style={{
+                 color: C.rosa,
+                 fontFamily: "'Playfair Display', serif",
+                 letterSpacing: ".2px"
+               }}>
+              Hare Krishna Hare Krishna Krishna Krishna Hare Hare
               Hare Rama Hare Rama Rama Rama Hare Hare
             </p>
           </div>
