@@ -54,6 +54,7 @@ export default function Page() {
           required
           className="w-full p-3 border rounded-md"
         />
+
         <div className="flex gap-4">
           <input
             type="date"
@@ -68,6 +69,7 @@ export default function Page() {
             className="w-1/2 p-3 border rounded-md"
           />
         </div>
+
         <input
           type="text"
           name="cidade"
